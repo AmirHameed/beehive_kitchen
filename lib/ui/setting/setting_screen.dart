@@ -8,8 +8,6 @@ import 'package:beehive_kitchen/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
-
 class SettingScreen extends StatelessWidget {
   static const String route = 'setting_screen_route';
 
@@ -131,6 +129,8 @@ showChangeInformationBottomSheet(
     context: context,
     enableDrag: true,
     isDismissible: true,
+    isScrollControlled: true,
+    constraints: BoxConstraints(minHeight: size.height/3.2,maxHeight: size.height/3.2),
     backgroundColor: Colors.white,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
@@ -167,71 +167,71 @@ showChangeInformationBottomSheet(
 
                 StatefulBuilder(
                   builder: (_,setState)=>
-                  Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: (){
-                            isEnglish=true;
-                            setState((){});
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              border: Border.all(
-                                width: 1,
-                                color:isEnglish==true?Colors.transparent: Constants.colorTextLight2
-                              ),
-                              color:isEnglish==true? Constants.colorPrimary.withOpacity(0.05):Colors.transparent
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Image.asset('assets/english_flag.png',height: 30,width: 30),
-                                const SizedBox(width: 5),
-                                 Text(AppText.ENGLISH,style: TextStyle(fontSize: 14,fontFamily: Constants.cairoLight,color:isEnglish==true? Constants.colorPrimary:Constants.colorOnSecondary),)
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child:GestureDetector(
-                          onTap: (){
-                            isEnglish=false;
-                            setState((){});
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 60,
-                            width:size.width/4,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                border: Border.all(
-                                    width: 1,
-                                    color:isEnglish==false?Colors.transparent: Constants.colorTextLight2
+                      Row(
+                        children: [
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: (){
+                                isEnglish=true;
+                                setState((){});
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 60,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(
+                                        width: 1,
+                                        color:isEnglish==true?Colors.transparent: Constants.colorTextLight2
+                                    ),
+                                    color:isEnglish==true? Constants.colorPrimary.withOpacity(0.05):Colors.transparent
                                 ),
-                                color:isEnglish==false? Constants.colorPrimary.withOpacity(0.05):Colors.transparent
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Image.asset('assets/arabic_flag.png',height: 30,width: 30),
-                                const SizedBox(width: 5),
-
-                                Text(AppText.ARABIC,style: TextStyle(fontSize: 14,fontFamily: Constants.cairoLight,color:isEnglish==false? Constants.colorPrimary:Constants.colorOnSecondary),)
-                              ],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Image.asset('assets/english_flag.png',height: 30,width: 30),
+                                    const SizedBox(width: 5),
+                                    Text(AppText.ENGLISH,style: TextStyle(fontSize: 14,fontFamily: Constants.cairoLight,color:isEnglish==true? Constants.colorPrimary:Constants.colorOnSecondary),)
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child:GestureDetector(
+                              onTap: (){
+                                isEnglish=false;
+                                setState((){});
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 60,
+                                width:size.width/4,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    border: Border.all(
+                                        width: 1,
+                                        color:isEnglish==false?Colors.transparent: Constants.colorTextLight2
+                                    ),
+                                    color:isEnglish==false? Constants.colorPrimary.withOpacity(0.05):Colors.transparent
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Image.asset('assets/arabic_flag.png',height: 30,width: 30),
+                                    const SizedBox(width: 5),
+
+                                    Text(AppText.ARABIC,style: TextStyle(fontSize: 14,fontFamily: Constants.cairoLight,color:isEnglish==false? Constants.colorPrimary:Constants.colorOnSecondary),)
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
                 ),
                 const SizedBox(height: 20),
                 SizedBox(

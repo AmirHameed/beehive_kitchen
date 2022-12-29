@@ -1,9 +1,11 @@
+import 'dart:io';
+
 import 'package:beehive_kitchen/extension/context_extension.dart';
-import 'package:beehive_kitchen/ui/product_screen.dart';
 import 'package:beehive_kitchen/utils/app_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:image_picker/image_picker.dart';
-
+import '../helper/dialog_helper.dart';
 import '../utils/constants.dart';
 import 'common/app_button.dart';
 import 'common/app_text_field.dart';
@@ -18,17 +20,23 @@ class RestaurantDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dialogHelper = DialogHelper.instance();
+
     return Scaffold(
         body: SafeArea(
           child: Column(children: [
-
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(),
+                  GestureDetector(
+                      onTap: () => Navigator.pop(context, true),
+                      child: const Icon(
+                        Icons.arrow_back_ios,
+                        size: 16,
+                        color: Constants.colorOnSecondary,
+                      )),
                   const Text('Beef burgur',
                       style: TextStyle(
                           color: Constants.colorOnSecondary,
@@ -36,7 +44,7 @@ class RestaurantDetailScreen extends StatelessWidget {
                           fontFamily: Constants.cairoBold)),
                   GestureDetector(
                     onTap: () {
-                      showAddProductSheet(context);
+                      showAddProductSheet(context,true);
                     },
                     child: const Text(AppText.ADD_NEW,
                         style: TextStyle(
@@ -60,62 +68,93 @@ class RestaurantDetailScreen extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 separatorBuilder: (_, index) => const SizedBox(height: 8),
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                itemBuilder: (_, index) => GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, ProductScreen.route),
-                  child: Material(
-                    elevation: 2,
-                    borderRadius: BorderRadius.circular(12),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 5, horizontal: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Constants.colorOnSurface,
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: 90,
-                            width: 90,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child:  Image(
-                                  image: AssetImage(
-                                      index.isOdd? 'assets/burgur1.png':'assets/burgur2.png'),
-                                  fit: BoxFit.cover,
-                                )),
-                          ),
-                          Padding(
-                            padding:
-                            const EdgeInsets.only(top: 0, left: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Text('Beef burgur',
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontFamily: Constants.cairoBold,
-                                        color: Constants.colorOnSecondary,
-                                        fontWeight: FontWeight.bold)),
-                                SizedBox(height: 5),
-                                Text('Lorem ipsum Lorem ipsum',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: Constants.cairoSemibold,
-                                        color: Constants.colorTextLight)),
-                                SizedBox(height: 5),
-                                Text('23.45 \$',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontFamily: Constants.cairoBold,
-                                        color: Constants.colorPrimary)),
-                              ],
+                itemBuilder: (_, index) => Slidable(
+                  endActionPane:
+                  ActionPane(
+                      extentRatio: 0.4,
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                            onPressed: (_){
+                              dialogHelper
+                                ..injectContext(context)
+                                ..showDeleteDialogCart();
+                            },
+                            backgroundColor: Colors.red,
+                            icon:Image.asset('assets/Delete square.png'),
+                            label: '',
+                            borderRadius: BorderRadius.circular(12),
+                            padding: const EdgeInsets.only(top: 10),
+                            spacing: 0),
+                        const SizedBox(width: 5),
+                        SlidableAction(
+                            onPressed: (_){
+                              showAddProductSheet(context, false);
+                            },
+                            backgroundColor: const Color(0xffFFC608),
+                            icon:Image.asset('assets/Edit Square.png'),
+                            label: '',
+                            borderRadius: BorderRadius.circular(12),
+                            padding: const EdgeInsets.only(top: 10),
+                            spacing: 0),
+                      ]),
+                  child: GestureDetector(
+                    onTap: (){},
+                    child: Material(
+                      elevation: 2,
+                      borderRadius: BorderRadius.circular(12),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Constants.colorOnSurface,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 90,
+                              width: 90,
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child:  Image(
+                                    image: AssetImage(
+                                        index.isOdd? 'assets/burgur1.png':'assets/burgur2.png'),
+                                    fit: BoxFit.cover,
+                                  )),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding:
+                              const EdgeInsets.only(top: 0, left: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Text('Beef burgur',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: Constants.cairoBold,
+                                          color: Constants.colorOnSecondary,
+                                          fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 5),
+                                  Text('Lorem ipsum Lorem ipsum',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: Constants.cairoSemibold,
+                                          color: Constants.colorTextLight)),
+                                  SizedBox(height: 5),
+                                  Text('23.45 \$',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontFamily: Constants.cairoBold,
+                                          color: Constants.colorPrimary)),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -127,7 +166,7 @@ class RestaurantDetailScreen extends StatelessWidget {
   }
 }
 
-showAddProductSheet(BuildContext context) {
+showAddProductSheet(BuildContext context,bool isAdd) {
   final _formkey = GlobalKey<FormState>();
   final size = context.screenSize;
   XFile? file;
@@ -160,8 +199,8 @@ showAddProductSheet(BuildContext context) {
               width: 40,
               height: 6,
             ),
-            const Text(AppText.ADD_PRODUCT,
-                style: TextStyle(
+             Text(isAdd? AppText.ADD_PRODUCT:AppText.EDIT_PRODUCT,
+                style: const TextStyle(
                     fontSize: 16,
                     fontFamily: Constants.cairoBold,
                     color: Constants.colorOnSecondary)),
@@ -198,8 +237,6 @@ showAddProductSheet(BuildContext context) {
                                     color: Constants.colorTextLight,
                                     fontFamily: Constants.cairoRegular,
                                     fontSize: 13)))),
-
-
                     const Text(AppText.PRODUCT_PRICE,
                         style: TextStyle(
                             fontSize: 16, color: Constants.colorOnSecondary, fontFamily: Constants.cairoSemibold)),
@@ -256,24 +293,41 @@ showAddProductSheet(BuildContext context) {
                     StatefulBuilder(
                       builder: (_,setState){
                         setSetterFile=setState;
-                      return
-                        file!=null?
+                      return file!=null?
                         Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children:   [
-
-                                GestureDetector(
-                                    onTap: (){
-                                      setSetterFile?.call(()=>file=null);
-                                    },
-                                    child: const Icon(Icons.clear,color: Constants.colorTextLight,size: 16)),
-                          const Text('photo 1.pdf',
-                              style: TextStyle(
-                                  height: 1.2,
-                                  fontSize: 14, color: Constants.colorIcon, fontFamily: Constants.cairoMedium,)),
-                        ],
-                      ):const SizedBox();
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            SizedBox(
+                              height: 90,
+                              width: 90,
+                              child: Stack(
+                              children:   [
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child:  Image(image: FileImage(File(file!.path)),fit: BoxFit.cover,width: 80,height: 80)),
+                                  ),
+                                ),
+                                      Positioned(
+                                        left: 0,
+                                        top: 0,
+                                        child: GestureDetector(
+                                            onTap: (){
+                                              setSetterFile?.call(()=>file=null);
+                                            },
+                                            child: Container(
+                                                decoration: const BoxDecoration(shape: BoxShape.circle,color: Constants.colorPrimary),width: 20,height: 20,
+                                                child: const Icon(Icons.clear,color: Constants.colorOnPrimary,size: 12),),
+                                        ),
+                                      ),
+                              ],
+                      ),
+                            ),
+                          ],
+                        ):const SizedBox();
                       }
                     ),
 

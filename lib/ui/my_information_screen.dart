@@ -1,4 +1,5 @@
 import 'package:beehive_kitchen/extension/context_extension.dart';
+import 'package:beehive_kitchen/ui/auth/login_screen.dart';
 import 'package:beehive_kitchen/ui/common/app_bar.dart';
 import 'package:beehive_kitchen/ui/common/app_button.dart';
 import 'package:beehive_kitchen/utils/app_strings.dart';
@@ -13,8 +14,6 @@ class MyInformationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = context.screenSize;
-
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -52,7 +51,9 @@ class MyInformationScreen extends StatelessWidget {
                   showChangeInformationBottomSheet(context,AppText.EMAIL,AppText.CHANGE_EMAIL,'Amir@gmail.com');
                 }),
             _SingleProfileItemNavigation(
-                title: AppText.MOBILE_NUMBER, name: '123456789', onTap: () {}),
+                title: AppText.MOBILE_NUMBER, name: '123456789', onTap: () {
+              showChangeInformationBottomSheet(context,AppText.MOBILE_NUMBER,AppText.CHANGE_MOBILE_NUMBER,'123456789');
+            }),
             _SingleProfileItemNavigation(
                 title: 'Password',
                 name: '************',
@@ -60,22 +61,25 @@ class MyInformationScreen extends StatelessWidget {
                   showChangePasswordInformationBottomSheet(context);
                 }),
             _SingleProfileItemNavigation(
-                title: 'Commercial certificate',
-                name: 'commercial certificate.pdf',
+                title: 'Store Location',
+                name: 'Nozhah City,, P.O.Box : 12697',
                 onTap: () {
-                  showChangePasswordInformationBottomSheet(context);
+                  showChangeInformationBottomSheet(context,'Store Location','Change store location','Nozhah City,, P.O.Box : 12697');
                 }),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(AppText.LOGOUT,
-                    style: TextStyle(
-                        fontSize: 14,
-                        color: Constants.colorOnSecondary,
-                        fontFamily: Constants.cairoSemibold)),
-                Image.asset('assets/logout@2x.png', width: 25)
-              ],
+            GestureDetector(
+              onTap: ()=>Navigator.pushNamedAndRemoveUntil(context, LoginScreen.route, (route) => false),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(AppText.LOGOUT,
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Constants.colorOnSecondary,
+                          fontFamily: Constants.cairoSemibold)),
+                  Image.asset('assets/logout@2x.png', width: 25)
+                ],
+              ),
             ),
             const SizedBox(height: 20)
           ]),
@@ -84,14 +88,14 @@ class MyInformationScreen extends StatelessWidget {
     );
   }
 }
-
 class _SingleProfileItemNavigation extends StatelessWidget {
   final String title;
   final String name;
+  final bool isChange;
   final VoidCallback onTap;
 
   const _SingleProfileItemNavigation(
-      {required this.title, required this.name, required this.onTap});
+      {required this.title, required this.name, required this.onTap,this.isChange=true});
 
   @override
   Widget build(BuildContext context) {
@@ -117,20 +121,19 @@ class _SingleProfileItemNavigation extends StatelessWidget {
                       fontSize: 14, color: Constants.colorTextLight, fontFamily: Constants.cairoRegular)),
             ],
           ),
-          GestureDetector(
+          isChange?GestureDetector(
             onTap: onTap,
             child: const Text('Change',
                 style: TextStyle(
                     fontSize: 14,
                     color: Constants.colorPrimary,
                     fontFamily: Constants.cairoRegular)),
-          ),
+          ):const SizedBox(),
         ],
       ),
     );
   }
 }
-
 showChangeInformationBottomSheet(
     BuildContext context, String title, String header, String text) {
   final _formkey = GlobalKey<FormState>();
@@ -140,6 +143,8 @@ showChangeInformationBottomSheet(
     context: context,
     enableDrag: true,
     isDismissible: true,
+    isScrollControlled: true,
+    constraints: BoxConstraints(minHeight: size.height/2.9,maxHeight: size.height/2.9),
     backgroundColor: Colors.white,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(

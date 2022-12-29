@@ -23,6 +23,7 @@ class HomeNavigationItemScreen extends StatelessWidget {
       Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             GestureDetector(
               onTap: () {
@@ -34,12 +35,10 @@ class HomeNavigationItemScreen extends StatelessWidget {
                 height: 30,
               ),
             ),
-            const Spacer(),
             const Text('Hello!',
                 style:
                     TextStyle(fontSize: 16, fontFamily: Constants.cairoBold)),
-            const SizedBox(width: 5),
-            const Icon(Icons.menu, color: Constants.colorOnSecondary, size: 28),
+            const SizedBox(),
           ],
         ),
       ),
@@ -83,11 +82,6 @@ class HomeNavigationItemScreen extends StatelessWidget {
           children: const [
             Text(AppText.LATEST_ORDER,
                 style: TextStyle(fontSize: 14, fontFamily: Constants.cairoBold)),
-            Text(AppText.VIEW_ALL,
-                style: TextStyle(
-                    fontSize: 12,
-                    fontFamily: Constants.cairoMedium,
-                    color: Color(0xff6D6D6D))),
           ],
         ),
       ),
@@ -102,13 +96,13 @@ class HomeNavigationItemScreen extends StatelessWidget {
                   GestureDetector(
                       onTap: () => Navigator.pushNamed(
                           context, OrderDetailScreen.route,
-                          arguments: [false, false, true]),
-                      child: const SingleOrderItemWidget(title: AppText.NEW)),
+                          arguments: [true,bloc.state.homeIndex[0]?true:false]),
+                      child: const SingleOrderItemWidget(title: AppText.NEW,index: 0,)),
                   GestureDetector(
                       onTap: () => Navigator.pushNamed(
                           context, OrderDetailScreen.route,
-                          arguments: [false, false, true]),
-                      child: const SingleOrderItemWidget(title: AppText.NEW)),
+                          arguments: [true,bloc.state.homeIndex[1]?true:false]),
+                      child: const SingleOrderItemWidget(title: AppText.NEW,index:1)),
                 ],
               )
             ],

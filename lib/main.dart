@@ -1,6 +1,10 @@
 import 'dart:io';
 import 'package:beehive_kitchen/translation/codegen_loader.g.dart';
+import 'package:beehive_kitchen/ui/auth/forgot_password_screen.dart';
 import 'package:beehive_kitchen/ui/auth/login_screen.dart';
+import 'package:beehive_kitchen/ui/auth/login_screen_bloc.dart';
+import 'package:beehive_kitchen/ui/auth/new_password_screen.dart';
+import 'package:beehive_kitchen/ui/auth/new_password_screen_bloc.dart';
 import 'package:beehive_kitchen/ui/auth/otp_screen.dart';
 import 'package:beehive_kitchen/ui/auth/signup_profile_screen.dart';
 import 'package:beehive_kitchen/ui/auth/signup_profile_screen_bloc.dart';
@@ -94,11 +98,14 @@ class _AppRouter {
       case WeWillContactYouScreen.route:
         return _getPageRoute(const WeWillContactYouScreen());
       case LoginScreen.route:
-        return _getPageRoute(const LoginScreen());
+        return _getPageRoute(BlocProvider(
+            create: (_) => LoginScreenBloc(),
+            child: const LoginScreen()));
       case SignUpScreen.route:
         return _getPageRoute(const SignUpScreen());
       case OTPScreen.route:
-        return _getPageRoute(const OTPScreen());
+        final argument=settings.arguments as bool;
+        return _getPageRoute(OTPScreen(isLogin: argument));
       case SignUpProfileScreen.route:
         return _getPageRoute(BlocProvider(
             create: (_) => SignUpProfileScreenBloc(),
@@ -120,12 +127,11 @@ class _AppRouter {
       case PaymentMethodScreen.route:
         return _getPageRoute(const PaymentMethodScreen());
       case OrderDetailScreen.route:
-        final argument = settings.arguments as List;
-        final bool isDetail=argument[0];
-        final bool isProviderDetail=argument[1];
-        final bool isDeliveryPayment=argument[2];
+        final argument = settings.arguments as List<bool>;
+        final bool isStartOrder=argument.first;
+        final bool isStartOrderCondition=argument.last;
         return _getPageRoute(BlocProvider(
-            create: (_) => OrderDetailScreenBloc(isOrderDetail: isDetail,isProviderOffer: isProviderDetail,isDeliveryPayment: isDeliveryPayment),
+            create: (_) => OrderDetailScreenBloc(isStartOrder:isStartOrder,isStartOrderCondition: isStartOrderCondition),
             child: const OrderDetailScreen()));
       case RestaurantDetailScreen.route:
         return _getPageRoute(const RestaurantDetailScreen());
@@ -147,6 +153,12 @@ class _AppRouter {
             child: const OrderTrackingScreen()));
       case ReviewsScreen.route:
         return _getPageRoute(const ReviewsScreen());
+      case ForgotPasswordScreen.route:
+        return _getPageRoute(ForgotPasswordScreen());
+      case NewPasswordScreen.route:
+        return _getPageRoute(BlocProvider(
+            create: (_) => NewPasswordScreenBloc(),
+            child: NewPasswordScreen()));
     }
     return null;
   }

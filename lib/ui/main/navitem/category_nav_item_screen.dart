@@ -1,4 +1,5 @@
 import 'package:beehive_kitchen/extension/context_extension.dart';
+import 'package:beehive_kitchen/helper/dialog_helper.dart';
 import 'package:beehive_kitchen/ui/main/main_screen_bloc.dart';
 import 'package:beehive_kitchen/ui/main/main_screen_state.dart';
 import 'package:beehive_kitchen/ui/main/navitem/order_screen.dart';
@@ -9,6 +10,7 @@ import 'package:beehive_kitchen/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../common/app_button.dart';
 
@@ -21,6 +23,7 @@ class CategoryNavigationItemScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = context.screenSize;
     final bloc = context.read<MainScreenBloc>();
+    final dialogHelper = DialogHelper.instance();
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Padding(
@@ -36,7 +39,7 @@ class CategoryNavigationItemScreen extends StatelessWidget {
                     fontFamily: Constants.cairoBold)),
             GestureDetector(
               onTap: () {
-                showPriceOfferBottomSheet(context);
+                showAddCategoryBottomSheet(context,true);
               },
               child: const Text(AppText.ADD_NEW,
                   style: TextStyle(
@@ -56,41 +59,72 @@ class CategoryNavigationItemScreen extends StatelessWidget {
       ListView.builder(
         shrinkWrap: true,
         itemCount: 4,
-        itemBuilder: (_,index)=> GestureDetector(
-          onTap: ()=>Navigator.pushNamed(context, RestaurantDetailScreen.route),
-          child: Container(
-            height: 50,
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 20),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(width: 1, color: Constants.colorTextLight3)),
-            child: Row(
+        itemBuilder: (_,index)=> Slidable(
+          endActionPane:
+          ActionPane(
+              extentRatio: 0.3,
+              motion: const ScrollMotion(),
               children: [
-                 Text(index==0?'Beef burgur':index==1?'Pizza':index==2?'Chicken':'Steak',
-                    style: const TextStyle(
-                        color: Constants.colorOnSecondary,
-                        fontFamily: Constants.cairoBold,
-                        fontSize: 14)),
-                const SizedBox(width: 10),
-                const Spacer(),
-                Container(
-                    height: 25,
-                    width: 25,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Constants.colorPrimary,
-                        border: Border.all(width: 1, color: Constants.colorOnPrimary)),
-                    child:  Text(index==0?'5':index==1?'3':index==2?'3':'2',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 13,
-                            color: Constants.colorOnPrimary,
-                            fontFamily: Constants.cairoRegular))),
-                const Icon(Icons.arrow_forward_ios_rounded,
-                    color: Constants.colorTextLight, size: 18)
-              ],
+                SlidableAction(
+                    onPressed: (_){
+                      dialogHelper
+                        ..injectContext(context)
+                        ..showDeleteDialogCart();
+                    },
+                    backgroundColor: Colors.red,
+                    icon:Image.asset('assets/Delete square.png'),
+                    label: '',
+                    borderRadius: BorderRadius.circular(12),
+                    padding: const EdgeInsets.only(top: 10),
+                    spacing: 0),
+                const SizedBox(width: 5),
+                SlidableAction(
+                    onPressed: (_){
+                     showAddCategoryBottomSheet(context, false);
+                    },
+                    backgroundColor: const Color(0xffFFC608),
+                    icon:Image.asset('assets/Edit Square.png'),
+                    label: '',
+                    borderRadius: BorderRadius.circular(12),
+                    padding: const EdgeInsets.only(top: 10),
+                    spacing: 0),
+              ]),
+          child: GestureDetector(
+            onTap: ()=>Navigator.pushNamed(context, RestaurantDetailScreen.route),
+            child: Container(
+              height: 50,
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: const EdgeInsets.symmetric(vertical: 5,horizontal: 20),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(width: 1, color: Constants.colorTextLight3)),
+              child: Row(
+                children: [
+                   Text(index==0?'Beef burgur':index==1?'Pizza':index==2?'Chicken':'Steak',
+                      style: const TextStyle(
+                          color: Constants.colorOnSecondary,
+                          fontFamily: Constants.cairoBold,
+                          fontSize: 14)),
+                  const SizedBox(width: 10),
+                  const Spacer(),
+                  Container(
+                      height: 25,
+                      width: 25,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Constants.colorPrimary,
+                          border: Border.all(width: 1, color: Constants.colorOnPrimary)),
+                      child:  Text(index==0?'5':index==1?'3':index==2?'3':'2',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 13,
+                              color: Constants.colorOnPrimary,
+                              fontFamily: Constants.cairoRegular))),
+                  const Icon(Icons.arrow_forward_ios_rounded,
+                      color: Constants.colorTextLight, size: 18)
+                ],
+              ),
             ),
           ),
         ),
@@ -99,15 +133,17 @@ class CategoryNavigationItemScreen extends StatelessWidget {
   }
 }
 
-showPriceOfferBottomSheet(BuildContext context) {
+showAddCategoryBottomSheet(BuildContext context,bool isAdd) {
   final _formkey = GlobalKey<FormState>();
   final size = context.screenSize;
 
   return showModalBottomSheet(
     context: context,
     enableDrag: true,
-    isDismissible: true,
+    isScrollControlled: true,
+    constraints: BoxConstraints(minHeight: size.height/2.7,maxHeight: size.height/2.7),
     backgroundColor: Colors.white,
+    isDismissible: true,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(12.0), topRight: Radius.circular(12.0)),
@@ -127,8 +163,8 @@ showPriceOfferBottomSheet(BuildContext context) {
             width: 40,
             height: 6,
           ),
-          const Text(AppText.ADD_CATEGORY,
-              style: TextStyle(
+           Text(isAdd?AppText.ADD_CATEGORY:AppText.EDIT_CATEGORY,
+              style: const TextStyle(
                   fontSize: 16,
                   fontFamily: Constants.cairoBold,
                   color: Constants.colorOnSecondary)),
@@ -152,7 +188,7 @@ showPriceOfferBottomSheet(BuildContext context) {
                           borderRadius: BorderRadius.circular(8.0),
                           border: Border.all(color: Constants.colorTextLight)),
                       child: TextFormField(
-                          controller: TextEditingController(),
+                          controller: TextEditingController(text: isAdd?'':'Burgers'),
                           onChanged: (String? value) {},
                           keyboardType: TextInputType.text,
                           style: const TextStyle(
@@ -172,7 +208,7 @@ showPriceOfferBottomSheet(BuildContext context) {
                           onClick: () {
                             FocusScope.of(context).unfocus();
                           },
-                          text: AppText.SAVE,
+                          text:isAdd? AppText.SAVE:AppText.UPDATE,
                           textColor: Constants.colorOnSurface,
                           borderRadius: 8.0,
                           fontSize: 16,

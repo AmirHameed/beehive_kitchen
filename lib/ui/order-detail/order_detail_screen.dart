@@ -2,6 +2,7 @@ import 'package:beehive_kitchen/extension/context_extension.dart';
 import 'package:beehive_kitchen/ui/common/app_button.dart';
 import 'package:beehive_kitchen/ui/common/title_with_price_item.dart';
 import 'package:beehive_kitchen/ui/order-detail/order_detail_screen_bloc.dart';
+import 'package:beehive_kitchen/ui/order-detail/order_detail_screen_bloc_state.dart';
 import 'package:beehive_kitchen/utils/app_strings.dart';
 import 'package:beehive_kitchen/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -20,30 +21,37 @@ class OrderDetailScreen extends StatelessWidget {
     final dialogHelper = DialogHelper.instance();
 
     return Scaffold(
-      bottomNavigationBar: Material(
+      bottomNavigationBar:bloc.isStartOrder? Material(
         elevation: 6,
         color: Colors.white,
-        child: GestureDetector(
-          onTap: () {},
-          child: Container(
-            margin: const EdgeInsets.symmetric(
-                horizontal: 10, vertical: 10),
-            alignment: Alignment.center,
-            height: 48,
-            width: size.width,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                    width: 1, color: Constants.colorPrimary),
-                color: Constants.colorPrimary),
-            child: const Text(AppText.START_ORDER,
-                style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                    fontFamily: Constants.cairoRegular)),
+        child: BlocBuilder <OrderDetailScreenBloc,OrderDetailScreenBlocState>(
+          builder: (_,state)=>
+           GestureDetector(
+            onTap: () {
+              if(!state.isStartOrder){
+                bloc.updateStartOrder(true);
+              }
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 10, vertical: 10),
+              alignment: Alignment.center,
+              height: 48,
+              width: size.width,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                      width: 1, color: Constants.colorPrimary),
+                  color: Constants.colorPrimary),
+              child: Text(!state.isStartOrder? AppText.START_ORDER:AppText.READY_FOR_PICKUP,
+                  style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.white,
+                      fontFamily: Constants.cairoRegular)),
+            ),
           ),
         ),
-      ),
+      ):const SizedBox(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

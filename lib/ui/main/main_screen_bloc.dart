@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainScreenBloc extends Cubit<MainScreenState> {
 
-  MainScreenBloc() : super(const MainScreenState.initial());
+  MainScreenBloc() : super(MainScreenState.initial());
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey globalKey = GlobalKey(debugLabel: 'btm_app_bar');
 
@@ -14,6 +14,15 @@ class MainScreenBloc extends Cubit<MainScreenState> {
     if (index != state.index) {
       emit(state.copyWith(index: index));
     }
+  }
+
+  void updateHomeIndex(index) {
+
+    final stateList=state.homeIndex;
+    final newList = List<bool>.of(stateList);
+
+    newList[index]=!newList[index];
+    emit(state.copyWith(homeIndex: newList));
   }
 
   void updateOrderIndex(int value){

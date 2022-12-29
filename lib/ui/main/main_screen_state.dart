@@ -4,7 +4,7 @@ class MainScreenState extends Equatable {
   final String imageUrl;
   final int index;
   final bool isLanguage;
-  final int homeIndex;
+  final List<bool> homeIndex;
   final int orderIndex;
   final bool isStore;
 
@@ -18,9 +18,9 @@ class MainScreenState extends Equatable {
         required this.isLanguage
 });
 
-  const MainScreenState.initial() : this(imageUrl: '', index: 0,isLanguage: true,homeIndex: 0,orderIndex: 0,isStore:true);
+   MainScreenState.initial() : this(imageUrl: '', index: 0,isLanguage: true,homeIndex: [false,false,false,false],orderIndex: 0,isStore:true);
 
-  MainScreenState copyWith({String? imageUrl,   int? index,bool? isLanguage,int?homeIndex,int?orderIndex,bool? isStore}) =>
+  MainScreenState copyWith({String? imageUrl,   int? index,bool? isLanguage,List<bool>?homeIndex,int?orderIndex,bool? isStore}) =>
       MainScreenState(
           isLanguage: isLanguage??this.isLanguage,
           index: index ?? this.index,

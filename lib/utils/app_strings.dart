@@ -4,19 +4,29 @@ abstract class AppText {
   static const String NEW_USER = 'New user? ';
   static const String SIGNUP = 'Sign up';
   static const String MOBILE_NUMBER = 'Mobile Number';
+  static const String CHANGE_MOBILE_NUMBER = 'Change mobile number';
   static const String OR_LOGIN_VIA = 'Or log in via';
   static const String OR_SIGNUP_VIA = 'Or sign up via';
   static const String ALREADY_REGISTERED = 'Already registered? ';
   static const String DONT_HAVE_AN_ACCOUNT = 'Don’t have an account? ';
   static const String HAVE_AN_ACCOUNT = 'Have an account? ';
   static const String FORGOT_PASSWORD = 'Forgot password?';
+  static const String FORGOT_PASSWORD_ = 'Forgot password';
+  static const String CREATE_NEW_PASSWORD = 'Create New Password';
+  static const String YOUR_NEW_PASSWORD_MUST_BE_DIFFIRENT = 'Your new password must be different from your old password';
   static const String CREATE_ACCOUNT = 'Create account';
   static const String OTP = 'OTP';
-  static const String PLEASE_ENTER_THE_OTP_CODE = 'Please enter the OTP code';
+  static const String PLEASE_ENTER_THE_OTP_CODE = 'We sent you a code on your phone,please enter that code below to verify your phone number';
+  static const String PLEASE_ENTER_THE_FORGOT_PASSWORD_CODE = 'Please enter the phone number below, we will send you OTP to reset your password ';
   static const String ENTER_CODE = 'Enter code';
   static const String CONFIRM = 'Confirm';
-  static const String NOT_RECEIVED = 'Not received? ';
+  static const String VERIFY = 'Verify';
+  static const String NOT_RECEIVED = 'Did not received OTP  ? ';
   static const String RESEND = 'Resend';
+  static const String RESET = 'Reset';
+  static const String PHONE = 'Phone';
+  static const String VERIFICATION= 'Verification';
+
   static const String STORE_NAME = 'Store name';
   static const String CATEGORY = 'Category';
   static const String CATEGORIES = 'Categories';
@@ -72,7 +82,9 @@ abstract class AppText {
   static const String NEW = 'New';
   static const String NEW_APPROVED = 'New-approved';
   static const String CHAT = 'Chat';
+  static const String ORDER_STATUS = 'Order status';
   static const String START_ORDER = 'Start order';
+  static const String READY_FOR_PICKUP = 'Ready for Pickup';
   static const String ARRIVED = 'Arrived';
   static const String ORDER_DETAILS = 'Order details';
   static const String REVIEW = 'Review';
@@ -125,11 +137,14 @@ abstract class AppText {
   static const String MAROF_CODE = 'Maroof code';
   static const String ENTER_MAROOF_CODE = 'Enter Maroof Code';
   static const String UPLOAD = 'Upload';
+  static const String UPDATE = 'Update';
   static const String ENTER_LOCATION = 'Enter Location';
   static const String CHOOSE_FROM_MAP = 'Choose from map';
   static const String PRICE_OFFER = 'Price offer';
   static const String ADD_CATEGORY = 'Add category';
+  static const String EDIT_CATEGORY = 'Edit category';
   static const String ADD_PRODUCT = 'Add product';
+  static const String EDIT_PRODUCT = 'Edit product';
   static const String PRODUCT_NAME = 'Product name';
   static const String ENTER_PRODUCT_NAME = 'Enter product name';
   static const String PRODUCT_PRICE = 'Product price';
@@ -140,9 +155,16 @@ abstract class AppText {
   static const String ENTER_CATEGORY_NAME = 'Enter Category Name';
   static const String DISCARD = 'Discard';
   static const String WALLET = 'WALLET';
-  static const String STORE_STATUS = 'store status(open/closed)';
+  static const String STORE_STATUS = 'Availability Status(open/closed)';
   static const String WE_WILL_CONTACT_YOU_SOON = 'We will contact you soon';
   static const String YOU_WILL_RECEIVED_AN_EMAIL_WITHIN_24 = 'You will receive an email within 24 hours\nexplaining the status of your request.\nThank you';
+  static const String BANK_DETAILS = 'Bank Details';
+  static const String BANK_NAME = 'Bank Name';
+  static const String ACCOUNT_TITLE = 'Account Title';
+  static const String ACCOUNT_NUMBER = 'Account Number';
+  static const String IBAN = 'IBAN';
+  static const String CONTACT_VIA_EMAIL = 'Contact Via Email';
+  static const String CONTACT_VIA_WHATSAPP = 'Contact Via Whatsapp';
 
 
 }

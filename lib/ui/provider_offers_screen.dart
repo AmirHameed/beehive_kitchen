@@ -171,7 +171,7 @@ class ProviderOfferScreen extends StatelessWidget {
                         width: size.width,
                         child: AppButton(
                             onClick: () {
-                              Navigator.pushNamed(context, OrderDetailScreen.route,arguments: [true,true,true]);
+                              Navigator.pushNamed(context, OrderDetailScreen.route,arguments:[true,false]);
                             },
                             text: AppText.CHOOSE_THE_OFFER,
                             textColor: Constants.colorOnSurface,
@@ -294,7 +294,7 @@ class ProviderOfferScreen extends StatelessWidget {
                         width: size.width,
                         child: AppButton(
                             onClick: () {
-                              Navigator.pushNamed(context, OrderDetailScreen.route,arguments: [true,true,true]);
+                              Navigator.pushNamed(context, OrderDetailScreen.route,arguments: [true,false]);
                             },
                             text: AppText.CHOOSE_THE_OFFER,
                             textColor: Constants.colorOnSurface,
